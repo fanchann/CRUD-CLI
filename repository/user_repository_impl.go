@@ -35,13 +35,21 @@ func (repo *userImplRepository) Insert(ctx context.Context, name string, email s
 func (repo *userImplRepository) Delete(ctx context.Context, id int32) (string, error) {
 	sqlQuery := "delete from user where id = ?"
 
-	result, err := repo.DB.QueryContext(ctx, sqlQuery, id)
-	defer result.Close()
+	result, err := repo.DB.ExecContext(ctx, sqlQuery, id)
+
 	if err != nil {
 		return "404 not found", err
 	}
 
-	return "Berhasil menghapus, id yang terhapus :" + strconv.Itoa(int(id)), nil
+	res, err := result.RowsAffected()
+	if err != nil {
+		return "Something went wrong", err
+	}
+	if res == 0 {
+		return "Id " + strconv.Itoa(int(id)) + " not found ", err
+	}
+
+	return "Succes delete id " + strconv.Itoa(int(id)), nil
 
 }
 

@@ -10,10 +10,13 @@ import (
 	"crud_mysqli_cli/repository"
 )
 
+var (
+	Connection = repository.NewUserRepository(GetConnection())
+	CtxB       = context.Background()
+)
+
 func InsertData() {
 	var name, email string
-	ctx := context.Background()
-	resultRepo := repository.NewUserRepository(GetConnection())
 
 	fmt.Printf("Masukan namamu :")
 	scanInput := bufio.NewScanner(os.Stdin)
@@ -24,7 +27,7 @@ func InsertData() {
 	fmt.Printf("Masukan emailmu :")
 	fmt.Scanln(&email)
 
-	has, err := resultRepo.Insert(ctx, name, email)
+	has, err := Connection.Insert(CtxB, name, email)
 	if err != nil {
 		panic(err)
 	}
@@ -33,12 +36,24 @@ func InsertData() {
 }
 
 func DeleteData() {
+	var id int32
+
+	fmt.Printf("Masukan id yang akan dihapus :")
+	fmt.Scanln(&id)
+
+	has, err := Connection.Delete(CtxB, id)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf(has)
+	fmt.Println()
+
 }
 
 func ShowsData() {
-	resultRepo := repository.NewUserRepository(GetConnection())
 
-	has, err := resultRepo.FindAll(context.Background())
+	has, err := Connection.FindAll(context.Background())
 	if err != nil {
 		panic(err)
 	}

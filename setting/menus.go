@@ -5,8 +5,11 @@ import (
 	"time"
 )
 
+var (
+	menu int
+)
+
 func Menus() {
-	var menu int
 	fmt.Printf(`
 [01] Insert Data
 [02] Show Data
@@ -14,6 +17,10 @@ func Menus() {
 [04] Delete data
 [05] Show Data by Id
 `)
+	Choose()
+}
+
+func Choose() {
 
 	fmt.Printf("[*] Choose :")
 	fmt.Scanln(&menu)
@@ -23,6 +30,8 @@ func Menus() {
 		InsertData()
 	case 2 | 02:
 		ShowsData()
+	case 4 | 04:
+		DeleteData()
 	default:
 		fmt.Println("yang bener lu!")
 		time.Sleep(2 * time.Second)
