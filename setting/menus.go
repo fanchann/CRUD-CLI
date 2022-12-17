@@ -10,8 +10,7 @@ var (
 )
 
 func Menus() {
-	fmt.Printf(`
-[01] Insert Data
+	fmt.Printf(`[01] Insert Data
 [02] Show Data
 [03] Update Data
 [04] Delete data
@@ -22,7 +21,7 @@ func Menus() {
 
 func Choose() {
 
-	fmt.Printf("[*] Choose :")
+	fmt.Printf("\n[*] Choose :")
 	fmt.Scanln(&menu)
 
 	switch menu {
@@ -30,8 +29,12 @@ func Choose() {
 		InsertData()
 	case 2 | 02:
 		ShowsData()
+	case 3 | 03:
+		UpdateData()
 	case 4 | 04:
 		DeleteData()
+	case 5 | 05:
+		ShowDataBId()
 	default:
 		fmt.Println("yang bener lu!")
 		time.Sleep(2 * time.Second)

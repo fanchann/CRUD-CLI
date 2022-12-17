@@ -73,3 +73,39 @@ func (repo *userImplRepository) FindAll(ctx context.Context) ([]entity.User, err
 	return rows, nil
 
 }
+
+func (repo *userImplRepository) Update(ctx context.Context, name, email string, id int32) (entity.User, error) {
+	sqlQuery := "update user set name = ?, email = ? where id = ?"
+
+	result, err := repo.DB.ExecContext(ctx, sqlQuery, name, email, id)
+	if err != nil {
+		return entity.User{}, err
+	}
+
+	res, err := result.RowsAffected()
+	if err != nil {
+		return entity.User{}, err
+	}
+
+	if res == 0 {
+		return entity.User{Id: id, Name: name, Email: email}, nil
+	} else {
+		return entity.User{}, nil
+	}
+}
+
+func (repo *userImplRepository) FindById(ctx context.Context, id int32) (entity.User, error) {
+	sqlQuery := "select * from user where id = ? limit 1"
+	var name, email string
+	result, err := repo.DB.QueryContext(ctx, sqlQuery, id)
+	if err != nil {
+		return entity.User{}, err
+	}
+
+	if result.Next() {
+		result.Scan(&id, &name, &email)
+		return entity.User{Id: id, Name: name, Email: email}, nil
+	} else {
+		return entity.User{}, nil
+	}
+}
