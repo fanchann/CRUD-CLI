@@ -98,6 +98,10 @@ func ShowDataBId() {
 		panic(err)
 	}
 
+	if len(has.Email) == 0 {
+		fmt.Println("kosong")
+		return
+	}
 	fmt.Println("Id -> ", has.Id)
 	fmt.Println("Name -> ", has.Name)
 	fmt.Println("Email -> ", has.Email)
